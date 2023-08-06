@@ -1,0 +1,25 @@
+# Virtual environment
+venv/
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Jupyter Notebook
+*.ipynb_checkpoints
+
+# Build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# Environment variables
+.env
+
+# IDE configurations
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db

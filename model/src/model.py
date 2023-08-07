@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import json
 
+
 # Читаем файл с сериализованной моделью
 with open('myfile.pkl', 'rb') as pkl_file:
     regressor = pickle.load(pkl_file)
@@ -17,15 +18,19 @@ try:
     channel.queue_declare(queue='y_pred')
 
     # Создаём функцию callback для обработки данных из очереди y_pred
-    def callback(ch, method, properties, body):
-        json_lst = np.array(json.loads(body))
-        features = json_lst.reshape(1, -1)
+    def callback(ch, method, properties, msg):
+        msg_dict = json.loads(msg)
+        features = np.array(msg_dict['body']).reshape(1, -1)
+        message_id = msg_dict['id']
         prediction = regressor.predict(features)[0]
         
+        message_pred = {'id': message_id,
+                            'body': prediction
+                          }  
         # Публикуем сообщение в очередь y_pred
         channel.basic_publish(exchange='',
                             routing_key='y_pred',
-                            body=json.dumps(prediction))
+                            body=json.dumps(message_pred))
         print(f'Предсказание {prediction} отправлено в очередь y_pred')
 
     # Извлекаем сообщение из очереди features

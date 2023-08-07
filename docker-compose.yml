@@ -31,3 +31,12 @@ services:
       - model
     volumes:
       - ./logs/:/usr/src/app/logs/
+  plot:
+    build:
+      context: ./plot
+    restart: always
+    depends_on:
+      - rabbitmq
+      - model
+    volumes:
+      - ./logs/:/usr/src/app/logs/

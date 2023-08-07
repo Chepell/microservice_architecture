@@ -44,5 +44,6 @@ while True:
 
         # Закрываем подключение
         connection.close()
-    except:
-        print('Не удалось подключиться к очереди')
+    except Exception as err:
+        print(f'Не удалось подключиться к очереди: {err}')
+        exit(0)
